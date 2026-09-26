@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/routes/page_transitions.dart';
 import '../../core/theme/app_theme.dart';
+import '../blocs/auth_cubit.dart';
 import '../blocs/tanker_bloc.dart';
 import '../blocs/water_bloc.dart';
+import 'auth/login_page.dart';
 import 'order_history_page.dart';
 import 'outage_list_page.dart';
 
@@ -32,11 +35,38 @@ class _HomePageState extends State<HomePage> {
     context.read<TankerBloc>().add(const TankerStarted());
   }
 
+  void _logOut() async {
+    await context.read<AuthCubit>().logOut();
+    if (!mounted) return;
+    Navigator.of(context).pushAndRemoveUntil(
+      AppPageTransitions.fadeThrough(const LoginPage()),
+      (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: IndexedStack(index: _index, children: _pages),
+      body: Stack(
+        children: [
+          IndexedStack(index: _index, children: _pages),
+          SafeArea(
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8, top: 4),
+                child: IconButton(
+                  tooltip: 'Log out',
+                  icon: const Icon(Icons.logout_rounded,
+                      color: AppColors.textSecondary),
+                  onPressed: _logOut,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,

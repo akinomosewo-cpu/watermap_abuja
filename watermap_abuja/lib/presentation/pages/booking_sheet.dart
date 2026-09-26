@@ -8,6 +8,7 @@ import '../../domain/models/booking.dart';
 import '../../domain/models/tanker.dart';
 import '../../domain/services/cost_splitter.dart';
 import '../blocs/booking_bloc.dart';
+import '../widgets/booking_confirmed_overlay.dart';
 
 /// Bottom sheet for booking a tanker, with an optional cost-split calculator
 /// for shared buildings (multiple flats splitting one delivery).
@@ -172,12 +173,11 @@ class _BookingSheetState extends State<BookingSheet> {
                 context
                     .read<BookingBloc>()
                     .add(TankerBooked(widget.tanker, flatLabels: labels));
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text(
-                          'Booking confirmed with ${widget.tanker.vendorName}')),
-                );
+                final vendorName = widget.tanker.vendorName;
+                final navigator = Navigator.of(context);
+                navigator.pop();
+                showBookingConfirmedAnimation(navigator.context,
+                    vendorName: vendorName);
               },
               child: const Text('Confirm booking'),
             ),

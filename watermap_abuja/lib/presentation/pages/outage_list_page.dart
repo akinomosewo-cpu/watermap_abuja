@@ -7,6 +7,7 @@ import '../../core/utils/formatters.dart';
 import '../../domain/models/district.dart';
 import '../blocs/water_bloc.dart';
 import '../widgets/section_header.dart';
+import '../widgets/staggered_entrance.dart';
 import '../widgets/status_badge.dart';
 import 'district_detail_page.dart';
 
@@ -43,11 +44,15 @@ class OutageListPage extends StatelessWidget {
                     const Gap(24),
                     const SectionHeader(title: 'Districts'),
                     const Gap(12),
-                    ...districts.map((d) => Padding(
+                    ...districts.asMap().entries.map((entry) => Padding(
                           padding: const EdgeInsets.only(bottom: 10),
-                          child: _DistrictTile(
-                              district: d,
-                              noticeCount: state.noticesFor(d.id).length),
+                          child: StaggeredEntrance(
+                            index: entry.key,
+                            child: _DistrictTile(
+                                district: entry.value,
+                                noticeCount:
+                                    state.noticesFor(entry.value.id).length),
+                          ),
                         )),
                     const Gap(24),
                   ]),
