@@ -37,10 +37,13 @@ class BookingState extends Equatable {
   final List<Booking> history;
   const BookingState({this.history = const []});
 
-  List<Booking> get sortedByRecent => [...history]..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+  List<Booking> get sortedByRecent =>
+      [...history]..sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
-  double get totalCommissionEarned =>
-      history.fold(0, (sum, b) => sum + (b.status == BookingStatus.cancelled ? 0 : b.commissionAmount));
+  double get totalCommissionEarned => history.fold(
+      0,
+      (sum, b) =>
+          sum + (b.status == BookingStatus.cancelled ? 0 : b.commissionAmount));
 
   @override
   List<Object?> get props => [history];
@@ -63,7 +66,8 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     on<BookingStatusChanged>((event, emit) {
       emit(BookingState(
         history: state.history
-            .map((b) => b.id == event.bookingId ? b.copyWith(status: event.status) : b)
+            .map((b) =>
+                b.id == event.bookingId ? b.copyWith(status: event.status) : b)
             .toList(),
       ));
     });

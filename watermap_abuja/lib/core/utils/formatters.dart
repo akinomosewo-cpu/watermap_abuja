@@ -3,7 +3,8 @@ import 'package:intl/intl.dart';
 class Formatters {
   Formatters._();
 
-  static final NumberFormat _naira = NumberFormat.currency(locale: 'en_NG', symbol: '₦', decimalDigits: 0);
+  static final NumberFormat _naira =
+      NumberFormat.currency(locale: 'en_NG', symbol: '₦', decimalDigits: 0);
 
   static String currency(num amount) => _naira.format(amount);
 

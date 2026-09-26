@@ -25,7 +25,9 @@ class Tanker {
   String get capacityLabel {
     if (capacityLitres >= 1000) {
       final kilo = capacityLitres / 1000;
-      final formatted = kilo == kilo.roundToDouble() ? kilo.toStringAsFixed(0) : kilo.toStringAsFixed(1);
+      final formatted = kilo == kilo.roundToDouble()
+          ? kilo.toStringAsFixed(0)
+          : kilo.toStringAsFixed(1);
       return '${formatted}k litres';
     }
     return '$capacityLitres litres';

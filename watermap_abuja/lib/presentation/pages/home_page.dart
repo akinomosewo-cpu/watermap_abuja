@@ -37,14 +37,34 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: IndexedStack(index: _index, children: _pages),
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: AppColors.surface,
-        selectedIndex: _index,
-        onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.water_drop_outlined), selectedIcon: Icon(Icons.water_drop_rounded), label: 'Water Map'),
-          NavigationDestination(icon: Icon(Icons.receipt_long_outlined), selectedIcon: Icon(Icons.receipt_long_rounded), label: 'Orders'),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          boxShadow: [
+            BoxShadow(
+                color: AppColors.textPrimary.withOpacity(0.06),
+                blurRadius: 20,
+                offset: const Offset(0, -4))
+          ],
+        ),
+        child: SafeArea(
+          top: false,
+          child: NavigationBar(
+            backgroundColor: Colors.transparent,
+            selectedIndex: _index,
+            onDestinationSelected: (i) => setState(() => _index = i),
+            destinations: const [
+              NavigationDestination(
+                  icon: Icon(Icons.water_drop_outlined),
+                  selectedIcon: Icon(Icons.water_drop_rounded),
+                  label: 'Water Map'),
+              NavigationDestination(
+                  icon: Icon(Icons.receipt_long_outlined),
+                  selectedIcon: Icon(Icons.receipt_long_rounded),
+                  label: 'Orders'),
+            ],
+          ),
+        ),
       ),
     );
   }

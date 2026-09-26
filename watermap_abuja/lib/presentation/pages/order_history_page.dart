@@ -6,6 +6,7 @@ import '../../core/theme/app_theme.dart';
 import '../../core/utils/formatters.dart';
 import '../../domain/models/booking.dart';
 import '../blocs/booking_bloc.dart';
+import '../widgets/status_badge.dart' show PillChip;
 
 class OrderHistoryPage extends StatelessWidget {
   const OrderHistoryPage({super.key});
@@ -22,7 +23,9 @@ class OrderHistoryPage extends StatelessWidget {
                 floating: true,
                 snap: true,
                 backgroundColor: AppColors.background,
-                title: Text('Orders', style: AppTextStyles.headlineMedium.copyWith(color: AppColors.textPrimary)),
+                title: Text('Orders',
+                    style: AppTextStyles.headlineMedium
+                        .copyWith(color: AppColors.textPrimary)),
               ),
               if (bookings.isEmpty)
                 SliverFillRemaining(
@@ -31,9 +34,12 @@ class OrderHistoryPage extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.receipt_long_rounded, color: AppColors.textTertiary, size: 40),
+                        const Icon(Icons.receipt_long_rounded,
+                            color: AppColors.textTertiary, size: 40),
                         const Gap(12),
-                        Text('No bookings yet', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)),
+                        Text('No bookings yet',
+                            style: AppTextStyles.bodyMedium
+                                .copyWith(color: AppColors.textSecondary)),
                       ],
                     ),
                   ),
@@ -44,7 +50,9 @@ class OrderHistoryPage extends StatelessWidget {
                   sliver: SliverList(
                     delegate: SliverChildListDelegate([
                       const Gap(4),
-                      ...bookings.map((b) => Padding(padding: const EdgeInsets.only(bottom: 10), child: _BookingCard(booking: b))),
+                      ...bookings.map((b) => Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: _BookingCard(booking: b))),
                       const Gap(24),
                     ]),
                   ),
@@ -78,45 +86,60 @@ class _BookingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(14), border: Border.all(color: AppColors.border)),
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: AppColors.softShadow()),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: Text(booking.vendorName, style: AppTextStyles.headlineSmall.copyWith(color: AppColors.textPrimary))),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(color: _statusColor.withOpacity(0.14), borderRadius: BorderRadius.circular(6)),
-                child: Text(booking.status.label, style: AppTextStyles.labelSmall.copyWith(color: _statusColor, fontWeight: FontWeight.w700)),
-              ),
+              Expanded(
+                  child: Text(booking.vendorName,
+                      style: AppTextStyles.headlineSmall
+                          .copyWith(color: AppColors.textPrimary))),
+              const Gap(8),
+              PillChip(label: booking.status.label, color: _statusColor),
             ],
           ),
           const Gap(6),
-          Text(Formatters.shortDate(booking.createdAt), style: AppTextStyles.labelMedium.copyWith(color: AppColors.textTertiary)),
+          Text(Formatters.shortDate(booking.createdAt),
+              style: AppTextStyles.labelMedium
+                  .copyWith(color: AppColors.textTertiary)),
           const Gap(12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Total paid', style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
-              Text(Formatters.currency(booking.totalPrice), style: AppTextStyles.headlineSmall.copyWith(color: AppColors.textPrimary)),
+              Text('Total paid',
+                  style: AppTextStyles.bodySmall
+                      .copyWith(color: AppColors.textSecondary)),
+              Text(Formatters.currency(booking.totalPrice),
+                  style: AppTextStyles.headlineSmall
+                      .copyWith(color: AppColors.textPrimary)),
             ],
           ),
           if (booking.isSplit) ...[
             const Gap(10),
             const Divider(height: 1),
             const Gap(10),
-            Text('Split ${booking.flatShares.length} ways', style: AppTextStyles.labelMedium.copyWith(color: AppColors.textSecondary)),
+            Text('Split ${booking.flatShares.length} ways',
+                style: AppTextStyles.labelMedium
+                    .copyWith(color: AppColors.textSecondary)),
             const Gap(6),
             ...booking.flatShares.map((s) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(s.flatLabel, style: AppTextStyles.labelMedium.copyWith(color: AppColors.textPrimary)),
-                      Text(Formatters.currency(s.shareAmount), style: AppTextStyles.labelMedium.copyWith(color: AppColors.textSecondary)),
+                      Text(s.flatLabel,
+                          style: AppTextStyles.labelMedium
+                              .copyWith(color: AppColors.textPrimary)),
+                      Text(Formatters.currency(s.shareAmount),
+                          style: AppTextStyles.labelMedium
+                              .copyWith(color: AppColors.textSecondary)),
                     ],
                   ),
                 )),

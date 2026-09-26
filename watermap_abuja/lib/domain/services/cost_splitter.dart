@@ -25,7 +25,8 @@ class CostSplitter {
     return List.generate(flatLabels.length, (index) {
       final extra = index < remainderKobo ? 1 : 0;
       final shareKobo = baseShareKobo + extra;
-      return FlatShare(flatLabel: flatLabels[index], shareAmount: shareKobo / 100);
+      return FlatShare(
+          flatLabel: flatLabels[index], shareAmount: shareKobo / 100);
     });
   }
 
@@ -38,7 +39,8 @@ class CostSplitter {
     required List<double> weights,
   }) {
     if (flatLabels.isEmpty || flatLabels.length != weights.length) {
-      throw ArgumentError('flatLabels and weights must be non-empty and equal length.');
+      throw ArgumentError(
+          'flatLabels and weights must be non-empty and equal length.');
     }
     if (weights.any((w) => w <= 0)) {
       throw ArgumentError('Weights must be positive.');
@@ -47,14 +49,16 @@ class CostSplitter {
     final totalWeight = weights.reduce((a, b) => a + b);
     final totalKobo = (totalPrice * 100).round();
 
-    final rawShares = weights.map((w) => totalKobo * (w / totalWeight)).toList();
+    final rawShares =
+        weights.map((w) => totalKobo * (w / totalWeight)).toList();
     final flooredShares = rawShares.map((s) => s.floor()).toList();
     var allocatedKobo = flooredShares.fold<int>(0, (sum, v) => sum + v);
     var remainderKobo = totalKobo - allocatedKobo;
 
     // Distribute leftover kobo to the shares with the largest fractional part.
     final fractionalOrder = List<int>.generate(flatLabels.length, (i) => i)
-      ..sort((a, b) => (rawShares[b] - flooredShares[b]).compareTo(rawShares[a] - flooredShares[a]));
+      ..sort((a, b) => (rawShares[b] - flooredShares[b])
+          .compareTo(rawShares[a] - flooredShares[a]));
 
     final shareKobo = List<int>.from(flooredShares);
     for (var i = 0; i < remainderKobo; i++) {
@@ -62,13 +66,15 @@ class CostSplitter {
     }
 
     return List.generate(flatLabels.length, (index) {
-      return FlatShare(flatLabel: flatLabels[index], shareAmount: shareKobo[index] / 100);
+      return FlatShare(
+          flatLabel: flatLabels[index], shareAmount: shareKobo[index] / 100);
     });
   }
 
   /// Verifies a list of shares sums (to the kobo) back to [totalPrice].
   static bool sharesReconcile(List<FlatShare> shares, double totalPrice) {
-    final sumKobo = shares.fold<int>(0, (sum, s) => sum + (s.shareAmount * 100).round());
+    final sumKobo =
+        shares.fold<int>(0, (sum, s) => sum + (s.shareAmount * 100).round());
     return sumKobo == (totalPrice * 100).round();
   }
 }

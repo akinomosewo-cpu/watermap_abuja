@@ -52,10 +52,12 @@ class Booking {
   });
 
   /// Commission the platform earns on this delivery.
-  double get commissionAmount => double.parse((basePrice * commissionRate).toStringAsFixed(2));
+  double get commissionAmount =>
+      double.parse((basePrice * commissionRate).toStringAsFixed(2));
 
   /// Total the customer(s) pay, including platform commission.
-  double get totalPrice => double.parse((basePrice + commissionAmount).toStringAsFixed(2));
+  double get totalPrice =>
+      double.parse((basePrice + commissionAmount).toStringAsFixed(2));
 
   bool get isSplit => flatShares.length > 1;
 

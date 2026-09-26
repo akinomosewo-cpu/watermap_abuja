@@ -12,8 +12,13 @@ class SectionHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: AppTextStyles.headlineSmall.copyWith(color: AppColors.textPrimary)),
-        if (trailing != null) Text(trailing!, style: AppTextStyles.labelMedium.copyWith(color: AppColors.textSecondary)),
+        Text(title,
+            style: AppTextStyles.headlineMedium.copyWith(
+                color: AppColors.textPrimary, fontWeight: FontWeight.w800)),
+        if (trailing != null)
+          Text(trailing!,
+              style: AppTextStyles.labelMedium
+                  .copyWith(color: AppColors.textSecondary)),
       ],
     );
   }

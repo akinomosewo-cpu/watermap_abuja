@@ -24,8 +24,8 @@ class TankerState extends Equatable {
       tankers.where((t) => t.districtId == districtId).toList()
         ..sort((a, b) => a.pricePerTrip.compareTo(b.pricePerTrip));
 
-  TankerState copyWith({List<Tanker>? tankers, bool? loading}) =>
-      TankerState(tankers: tankers ?? this.tankers, loading: loading ?? this.loading);
+  TankerState copyWith({List<Tanker>? tankers, bool? loading}) => TankerState(
+      tankers: tankers ?? this.tankers, loading: loading ?? this.loading);
 
   @override
   List<Object?> get props => [tankers, loading];

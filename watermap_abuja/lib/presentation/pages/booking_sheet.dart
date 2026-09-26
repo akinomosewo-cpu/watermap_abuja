@@ -27,7 +27,8 @@ class _BookingSheetState extends State<BookingSheet> {
   ];
 
   double get _basePrice => widget.tanker.pricePerTrip;
-  double get _commission => double.parse((_basePrice * kDefaultCommissionRate).toStringAsFixed(2));
+  double get _commission =>
+      double.parse((_basePrice * kDefaultCommissionRate).toStringAsFixed(2));
   double get _totalPrice => _basePrice + _commission;
 
   List<String> get _flatLabels => _flatControllers
@@ -35,9 +36,11 @@ class _BookingSheetState extends State<BookingSheet> {
       .where((t) => t.isNotEmpty)
       .toList();
 
-  void _addFlat() => setState(() => _flatControllers.add(TextEditingController(text: 'Flat ${_flatControllers.length + 1}')));
+  void _addFlat() => setState(() => _flatControllers
+      .add(TextEditingController(text: 'Flat ${_flatControllers.length + 1}')));
 
-  void _removeFlat(int index) => setState(() => _flatControllers.removeAt(index));
+  void _removeFlat(int index) =>
+      setState(() => _flatControllers.removeAt(index));
 
   @override
   void dispose() {
@@ -49,23 +52,34 @@ class _BookingSheetState extends State<BookingSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final labels = _splitCost && _flatLabels.length >= 2 ? _flatLabels : const <String>[];
-    final shares = labels.isNotEmpty ? CostSplitter.splitEvenly(totalPrice: _totalPrice, flatLabels: labels) : const <FlatShare>[];
+    final labels =
+        _splitCost && _flatLabels.length >= 2 ? _flatLabels : const <String>[];
+    final shares = labels.isNotEmpty
+        ? CostSplitter.splitEvenly(totalPrice: _totalPrice, flatLabels: labels)
+        : const <FlatShare>[];
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(context).viewInsets.bottom + 20),
+      padding: EdgeInsets.fromLTRB(
+          20, 20, 20, MediaQuery.of(context).viewInsets.bottom + 20),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Book ${widget.tanker.vendorName}', style: AppTextStyles.headlineLarge.copyWith(color: AppColors.textPrimary)),
+            Text('Book ${widget.tanker.vendorName}',
+                style: AppTextStyles.headlineLarge
+                    .copyWith(color: AppColors.textPrimary)),
             const Gap(4),
-            Text(widget.tanker.capacityLabel, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)),
+            Text(widget.tanker.capacityLabel,
+                style: AppTextStyles.bodyMedium
+                    .copyWith(color: AppColors.textSecondary)),
             const Gap(20),
-            _PriceRow(label: 'Tanker price', value: Formatters.currency(_basePrice)),
+            _PriceRow(
+                label: 'Tanker price', value: Formatters.currency(_basePrice)),
             const Gap(8),
-            _PriceRow(label: 'Platform service fee', value: Formatters.currency(_commission)),
+            _PriceRow(
+                label: 'Platform service fee',
+                value: Formatters.currency(_commission)),
             const Divider(height: 24),
             _PriceRow(
               label: 'Total',
@@ -78,8 +92,13 @@ class _BookingSheetState extends State<BookingSheet> {
               value: _splitCost,
               onChanged: (v) => setState(() => _splitCost = v),
               activeColor: AppColors.primary,
-              title: Text('Split cost across flats', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary)),
-              subtitle: Text('Share this delivery with neighbours in your building', style: AppTextStyles.labelMedium.copyWith(color: AppColors.textSecondary)),
+              title: Text('Split cost across flats',
+                  style: AppTextStyles.bodyMedium
+                      .copyWith(color: AppColors.textPrimary)),
+              subtitle: Text(
+                  'Share this delivery with neighbours in your building',
+                  style: AppTextStyles.labelMedium
+                      .copyWith(color: AppColors.textSecondary)),
             ),
             if (_splitCost) ...[
               const Gap(8),
@@ -89,14 +108,17 @@ class _BookingSheetState extends State<BookingSheet> {
                       Expanded(
                         child: TextField(
                           controller: e.value,
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
-                          decoration: const InputDecoration(hintText: 'Flat label'),
+                          style: AppTextStyles.bodyMedium
+                              .copyWith(color: AppColors.textPrimary),
+                          decoration:
+                              const InputDecoration(hintText: 'Flat label'),
                           onChanged: (_) => setState(() {}),
                         ),
                       ),
                       if (_flatControllers.length > 2)
                         IconButton(
-                          icon: const Icon(Icons.remove_circle_outline_rounded, color: AppColors.danger),
+                          icon: const Icon(Icons.remove_circle_outline_rounded,
+                              color: AppColors.danger),
                           onPressed: () => _removeFlat(e.key),
                         ),
                     ]),
@@ -104,22 +126,32 @@ class _BookingSheetState extends State<BookingSheet> {
               TextButton.icon(
                 onPressed: _addFlat,
                 icon: const Icon(Icons.add_rounded, color: AppColors.primary),
-                label: Text('Add another flat', style: AppTextStyles.labelLarge.copyWith(color: AppColors.primary)),
+                label: Text('Add another flat',
+                    style: AppTextStyles.labelLarge
+                        .copyWith(color: AppColors.primary)),
               ),
               if (shares.isNotEmpty) ...[
                 const Gap(12),
                 Container(
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.border)),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                      color: AppColors.background,
+                      borderRadius: BorderRadius.circular(18)),
                   child: Column(
                     children: shares
                         .map((s) => Padding(
                               padding: const EdgeInsets.symmetric(vertical: 4),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(s.flatLabel, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary)),
-                                  Text(Formatters.currency(s.shareAmount), style: AppTextStyles.bodyMedium.copyWith(color: AppColors.success, fontWeight: FontWeight.w700)),
+                                  Text(s.flatLabel,
+                                      style: AppTextStyles.bodyMedium.copyWith(
+                                          color: AppColors.textPrimary)),
+                                  Text(Formatters.currency(s.shareAmount),
+                                      style: AppTextStyles.bodyMedium.copyWith(
+                                          color: AppColors.success,
+                                          fontWeight: FontWeight.w700)),
                                 ],
                               ),
                             ))
@@ -129,16 +161,22 @@ class _BookingSheetState extends State<BookingSheet> {
               ] else if (_splitCost && _flatLabels.length < 2)
                 Padding(
                   padding: const EdgeInsets.only(top: 4),
-                  child: Text('Add at least 2 flats to split the cost', style: AppTextStyles.labelSmall.copyWith(color: AppColors.warning)),
+                  child: Text('Add at least 2 flats to split the cost',
+                      style: AppTextStyles.labelSmall
+                          .copyWith(color: AppColors.warning)),
                 ),
             ],
             const Gap(24),
             ElevatedButton(
               onPressed: () {
-                context.read<BookingBloc>().add(TankerBooked(widget.tanker, flatLabels: labels));
+                context
+                    .read<BookingBloc>()
+                    .add(TankerBooked(widget.tanker, flatLabels: labels));
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Booking confirmed with ${widget.tanker.vendorName}')),
+                  SnackBar(
+                      content: Text(
+                          'Booking confirmed with ${widget.tanker.vendorName}')),
                 );
               },
               child: const Text('Confirm booking'),
@@ -154,7 +192,8 @@ class _PriceRow extends StatelessWidget {
   final String label;
   final String value;
   final bool emphasize;
-  const _PriceRow({required this.label, required this.value, this.emphasize = false});
+  const _PriceRow(
+      {required this.label, required this.value, this.emphasize = false});
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +203,11 @@ class _PriceRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: emphasize ? AppTextStyles.headlineSmall.copyWith(color: AppColors.textPrimary) : style),
+        Text(label,
+            style: emphasize
+                ? AppTextStyles.headlineSmall
+                    .copyWith(color: AppColors.textPrimary)
+                : style),
         Text(value, style: style),
       ],
     );

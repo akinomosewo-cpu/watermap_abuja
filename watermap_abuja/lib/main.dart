@@ -14,7 +14,8 @@ void main() async {
     statusBarIconBrightness: Brightness.light,
     systemNavigationBarColor: AppColors.background,
   ));
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const WaterMapApp());
 }
 
@@ -31,9 +32,9 @@ class WaterMapApp extends StatelessWidget {
       child: MaterialApp(
         title: 'WaterMap Abuja',
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.dark,
-        darkTheme: AppTheme.dark,
-        themeMode: ThemeMode.dark,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.light,
+        themeMode: ThemeMode.light,
         home: const HomePage(),
       ),
     );

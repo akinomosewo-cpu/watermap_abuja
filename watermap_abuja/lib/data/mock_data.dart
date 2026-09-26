@@ -100,7 +100,8 @@ class MockData {
           id: 'n3',
           districtId: 'kubwa',
           title: 'Scheduled pipeline maintenance',
-          description: 'Routine maintenance on the Kubwa distribution line. Supply will resume in phases.',
+          description:
+              'Routine maintenance on the Kubwa distribution line. Supply will resume in phases.',
           status: NoticeStatus.inProgress,
           issuedAt: _now.subtract(const Duration(days: 3)),
           expectedResolution: _now.add(const Duration(days: 2)),
@@ -118,7 +119,8 @@ class MockData {
           id: 'n5',
           districtId: 'wuse2',
           title: 'Valve replacement completed',
-          description: 'The faulty valve on Aminu Kano Crescent has been replaced. Pressure is being restored.',
+          description:
+              'The faulty valve on Aminu Kano Crescent has been replaced. Pressure is being restored.',
           status: NoticeStatus.resolved,
           issuedAt: _now.subtract(const Duration(days: 6)),
           expectedResolution: _now.subtract(const Duration(days: 1)),

@@ -8,12 +8,14 @@ import '../../domain/models/booking.dart';
 import '../../domain/models/tanker.dart';
 import '../blocs/booking_bloc.dart';
 import '../blocs/tanker_bloc.dart';
+import '../widgets/status_badge.dart' show PillChip;
 import 'booking_sheet.dart';
 
 class TankerListPage extends StatelessWidget {
   final String districtId;
   final String districtName;
-  const TankerListPage({super.key, required this.districtId, required this.districtName});
+  const TankerListPage(
+      {super.key, required this.districtId, required this.districtName});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +24,14 @@ class TankerListPage extends StatelessWidget {
       appBar: AppBar(title: Text('Tankers · $districtName')),
       body: BlocBuilder<TankerBloc, TankerState>(
         builder: (context, state) {
-          if (state.loading) return const Center(child: CircularProgressIndicator());
+          if (state.loading)
+            return const Center(child: CircularProgressIndicator());
           final tankers = state.forDistrict(districtId);
           if (tankers.isEmpty) {
             return Center(
-              child: Text('No tankers registered near $districtName yet', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)),
+              child: Text('No tankers registered near $districtName yet',
+                  style: AppTextStyles.bodyMedium
+                      .copyWith(color: AppColors.textSecondary)),
             );
           }
           return ListView.separated(
@@ -51,11 +56,11 @@ class _TankerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: AppColors.softShadow(),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,31 +71,38 @@ class _TankerCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(tanker.vendorName, style: AppTextStyles.headlineSmall.copyWith(color: AppColors.textPrimary)),
+                    Text(tanker.vendorName,
+                        style: AppTextStyles.headlineSmall
+                            .copyWith(color: AppColors.textPrimary)),
                     const Gap(4),
                     Row(children: [
-                      const Icon(Icons.star_rounded, color: AppColors.warning, size: 15),
+                      const Icon(Icons.star_rounded,
+                          color: AppColors.warning, size: 15),
                       const Gap(2),
-                      Text(tanker.rating.toStringAsFixed(1), style: AppTextStyles.labelMedium.copyWith(color: AppColors.textSecondary)),
+                      Text(tanker.rating.toStringAsFixed(1),
+                          style: AppTextStyles.labelMedium
+                              .copyWith(color: AppColors.textSecondary)),
                       const Gap(8),
-                      Text('${tanker.completedDeliveries} deliveries', style: AppTextStyles.labelMedium.copyWith(color: AppColors.textSecondary)),
+                      Text('${tanker.completedDeliveries} deliveries',
+                          style: AppTextStyles.labelMedium
+                              .copyWith(color: AppColors.textSecondary)),
                     ]),
                   ],
                 ),
               ),
               if (!tanker.available)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(color: AppColors.textTertiary.withOpacity(0.2), borderRadius: BorderRadius.circular(6)),
-                  child: Text('Unavailable', style: AppTextStyles.labelSmall.copyWith(color: AppColors.textSecondary)),
-                ),
+                const PillChip(
+                    label: 'Unavailable', color: AppColors.textSecondary),
             ],
           ),
           const Gap(12),
           Row(children: [
-            const Icon(Icons.local_shipping_outlined, size: 15, color: AppColors.textTertiary),
+            const Icon(Icons.local_shipping_outlined,
+                size: 15, color: AppColors.textTertiary),
             const Gap(6),
-            Text(tanker.capacityLabel, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
+            Text(tanker.capacityLabel,
+                style: AppTextStyles.bodySmall
+                    .copyWith(color: AppColors.textSecondary)),
           ]),
           const Gap(14),
           Row(
@@ -99,18 +111,25 @@ class _TankerCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(Formatters.currency(totalPrice), style: AppTextStyles.headlineMedium.copyWith(color: AppColors.primary)),
-                  Text('incl. service fee', style: AppTextStyles.labelSmall.copyWith(color: AppColors.textTertiary)),
+                  Text(Formatters.currency(totalPrice),
+                      style: AppTextStyles.headlineMedium
+                          .copyWith(color: AppColors.primary)),
+                  Text('incl. service fee',
+                      style: AppTextStyles.labelSmall
+                          .copyWith(color: AppColors.textTertiary)),
                 ],
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(minimumSize: const Size(120, 44)),
+                style:
+                    ElevatedButton.styleFrom(minimumSize: const Size(120, 44)),
                 onPressed: tanker.available
                     ? () => showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
                           backgroundColor: AppColors.surface,
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20))),
                           builder: (_) => BlocProvider.value(
                             value: context.read<BookingBloc>(),
                             child: BookingSheet(tanker: tanker),

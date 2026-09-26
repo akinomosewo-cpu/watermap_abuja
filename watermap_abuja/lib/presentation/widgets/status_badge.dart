@@ -14,6 +14,27 @@ Color statusColor(OutageStatus status) {
   }
 }
 
+/// A small colorful pill for a label + accent color, used for repair-notice
+/// status, booking status, and other secondary badges across the app.
+class PillChip extends StatelessWidget {
+  final String label;
+  final Color color;
+  const PillChip({super.key, required this.label, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      decoration: BoxDecoration(
+          color: color.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(999)),
+      child: Text(label,
+          style: AppTextStyles.labelSmall
+              .copyWith(color: color, fontWeight: FontWeight.w800)),
+    );
+  }
+}
+
 class StatusBadge extends StatelessWidget {
   final OutageStatus status;
   const StatusBadge({super.key, required this.status});
@@ -22,12 +43,19 @@ class StatusBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = statusColor(status);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(color: color.withOpacity(0.14), borderRadius: BorderRadius.circular(20)),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      decoration: BoxDecoration(
+          color: color.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(999)),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
-        Container(width: 7, height: 7, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
-        const SizedBox(width: 6),
-        Text(status.label, style: AppTextStyles.labelSmall.copyWith(color: color, fontWeight: FontWeight.w700)),
+        Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+        const SizedBox(width: 7),
+        Text(status.label,
+            style: AppTextStyles.labelSmall
+                .copyWith(color: color, fontWeight: FontWeight.w800)),
       ]),
     );
   }

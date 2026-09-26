@@ -35,7 +35,8 @@ class WaterLoaded extends WaterState {
       notices.where((n) => n.districtId == districtId).toList()
         ..sort((a, b) => b.issuedAt.compareTo(a.issuedAt));
 
-  int get districtsInOutage => districts.where((d) => d.status == OutageStatus.outage).length;
+  int get districtsInOutage =>
+      districts.where((d) => d.status == OutageStatus.outage).length;
 
   @override
   List<Object?> get props => [districts, notices];
@@ -48,7 +49,8 @@ class WaterLoaded extends WaterState {
 class WaterBloc extends Bloc<WaterEvent, WaterState> {
   WaterBloc() : super(const WaterLoading()) {
     on<WaterStarted>((event, emit) {
-      emit(WaterLoaded(districts: MockData.districts(), notices: MockData.repairNotices()));
+      emit(WaterLoaded(
+          districts: MockData.districts(), notices: MockData.repairNotices()));
     });
   }
 }

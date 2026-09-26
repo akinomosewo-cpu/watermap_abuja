@@ -33,8 +33,12 @@ class BookingService {
     }
 
     final shares = weights != null
-        ? CostSplitter.splitByWeight(totalPrice: booking.totalPrice, flatLabels: flatLabels, weights: weights)
-        : CostSplitter.splitEvenly(totalPrice: booking.totalPrice, flatLabels: flatLabels);
+        ? CostSplitter.splitByWeight(
+            totalPrice: booking.totalPrice,
+            flatLabels: flatLabels,
+            weights: weights)
+        : CostSplitter.splitEvenly(
+            totalPrice: booking.totalPrice, flatLabels: flatLabels);
 
     return Booking(
       id: booking.id,
